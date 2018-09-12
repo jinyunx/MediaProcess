@@ -5,7 +5,8 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        printf("usage: %s infile", argv[0]);
+        printf("usage: %s infile\n", argv[0]);
+        return 1;
     }
 
     Demuxer demuxer;
@@ -19,6 +20,19 @@ int main(int argc, char *argv[])
         av_log(nullptr, AV_LOG_ERROR, "Decoder init error\n");
     else
         av_log(nullptr, AV_LOG_INFO, "Decoder init ok\n");
+
+    AVPacket packet;
+    packet.data = nullptr;
+    packet.size = 0;
+    while(demuxer.ReadPacket(&packet))
+    {
+        if (demuxer.GetMediaType(packet.stream_index) == AVMEDIA_TYPE_AUDIO)
+        {
+            const AVCodecParameters *param = demuxer.GetCodecPram(packet.stream_index);
+            printf("pts:%d, frame_size:%d, sample_rate:%d\n",
+                    packet.pts, param->frame_size, param->sample_rate);
+        }
+    }
 
     return 0;
 }

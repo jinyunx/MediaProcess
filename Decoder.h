@@ -5,8 +5,12 @@
 #ifndef MEDIAPROCESS_DECODER_H
 #define MEDIAPROCESS_DECODER_H
 
+extern "C"
+{
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+};
+
 #include <vector>
 
 class Decoder
@@ -90,6 +94,5 @@ private:
 
     std::vector<AVCodecContext *> m_decCtxVec;
 };
-
 
 #endif //MEDIAPROCESS_DECODER_H

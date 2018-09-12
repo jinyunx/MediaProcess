@@ -36,6 +36,21 @@ public:
         return m_formatContext;
     }
 
+    bool ReadPacket(AVPacket *packet)
+    {
+        return av_read_frame(m_formatContext, packet) == 0;
+    }
+
+    AVMediaType GetMediaType(int streamIndex) const
+    {
+        return m_formatContext->streams[streamIndex]->codecpar->codec_type;
+    }
+
+    const AVCodecParameters *GetCodecPram(int streamIndex) const
+    {
+        return m_formatContext->streams[streamIndex]->codecpar;
+    }
+
     Demuxer(const Demuxer &) = delete;
     void operator = (const Demuxer &) = delete;
 
