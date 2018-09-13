@@ -9,7 +9,7 @@ link_directories("${FFMPEG_PATH}/lib")
 
 add_executable(MediaProcess
         main.cpp
-        Demuxer.h Decoder.h)
+        Demuxer.h Decoder.h Muxer.h)
 
 target_link_libraries(MediaProcess
         avformat

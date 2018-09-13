@@ -29,6 +29,23 @@ public:
         return PrepareDecodeStreamCtx(formatContext) == 0;
     }
 
+    int DecodePacket(AVPacket *packet, const AVRational *timeBase)
+    {
+        av_packet_rescale_ts(packet, *timeBase,
+                             m_decCtxVec[packet->stream_index]->time_base);
+        return avcodec_send_packet(m_decCtxVec[packet->stream_index], packet);
+    }
+
+    int GetDecodeFrame(int streamIndex, AVFrame *frame)
+    {
+        return avcodec_receive_frame(m_decCtxVec[streamIndex], frame);
+    }
+
+    const AVRational *GetTimeBase(int streamIndex) const
+    {
+        return &m_decCtxVec[streamIndex]->time_base;
+    }
+
     Decoder(const Decoder &) = delete;
     void operator = (const Decoder &) = delete;
 

@@ -51,22 +51,15 @@ public:
         return m_formatContext->streams[streamIndex]->codecpar;
     }
 
+    const AVRational *GetTimeBase(int streamIndex)
+    {
+        return &m_formatContext->streams[streamIndex]->time_base;
+    }
+
     Demuxer(const Demuxer &) = delete;
     void operator = (const Demuxer &) = delete;
 
 private:
-    struct StreamContext
-    {
-        AVCodecContext *decCtx;
-        AVCodecContext *encCtx;
-
-        StreamContext()
-            : decCtx(nullptr),
-              encCtx(nullptr)
-        {
-        }
-    };
-
     int OpenDemuxingFile(const char *fileName)
     {
         int ret = 0;
